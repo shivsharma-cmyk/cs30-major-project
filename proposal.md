@@ -5,7 +5,10 @@
 
 ## Need to have list
 - Have a moving background
-- Have blocks to able to break and get stuff
+- Have blocks able to break and get stuff
 - Have some enemys 
-
+- Have a man charcter moving
+- Have a time and lives count
 ## Nice to have list
+- Have the main charcter double jump
+- Select a different charcter
