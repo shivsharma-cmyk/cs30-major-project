@@ -13,3 +13,19 @@ function setup() {
 function draw() {
   background(220);
 }
+
+class Player {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.speed = 4;
+  }
+
+  display() {
+
+  }
+}
+
+function preload() {
+  marioImg = loadImage("mario.png");
+}
