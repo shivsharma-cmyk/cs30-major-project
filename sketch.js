@@ -6,10 +6,19 @@
 // - describe what you did to take this project "above and beyond"
 
 let marioImg;
+let marioJumpImg;
+let x;
+let y;
+let dx;
+let dy;
+let time;
+let size;
+let jump;
 
 // puting the image in
 function preload() {
   marioImg = loadImage("mario.png");
+  marioJumpImg = loadImage("mario-jumping.png");
 }
 
 function setup() {
@@ -22,6 +31,10 @@ function draw() {
 
 // move image to x and y
 function movePlayer() {
+}
+
+function playerJump() {
+
 }
 
 function keyPressed() {
@@ -38,3 +51,4 @@ function keyPressed() {
     movePlayer();
   }
 }
+
