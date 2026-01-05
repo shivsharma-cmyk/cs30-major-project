@@ -5,6 +5,19 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+let map;
+let ground;
+let bricks;
+let questionBox;
+let pipe;
+let tileSize = 16;
+let brickImg;
+let groundImg;
+let qImg;
+let topLeft;
+let topRight;
+let rightImg;
+let leftImg;
 let marioImg;
 let marioJumpImg;
 let x;
@@ -22,11 +35,12 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, 242);
+  background(255);
 }
 
 function draw() {
-  background(220);
+  background(92, 148, 252);
 }
 
 // move image to x and y

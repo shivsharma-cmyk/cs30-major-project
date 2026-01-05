@@ -7,8 +7,8 @@
 - Have a moving background
 - Have blocks able to break and get stuff
 - Have some enemies 
-- Have a man charcter moving
-- Have a time and lives count
+- Have a man character moving
 ## Nice to have list
-- Have the main charcter double jump
-- Select a different charcter
+- Have the main character double jump
+- Select a different character
+- Have a time and lives count
