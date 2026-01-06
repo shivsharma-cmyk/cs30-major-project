@@ -7,7 +7,7 @@
 
 let map;
 let ground;
-let bricks;
+let brick;
 let questionBox;
 let pipe;
 let tileSize = 16;
@@ -32,14 +32,41 @@ let jump;
 function preload() {
   marioImg = loadImage("mario.png");
   marioJumpImg = loadImage("mario-jumping.png");
+  brickImg = loadImage("mario-block.png");
+  groundImg = loadImage("mario-ground-block");
+  qImg = loadImage("mario-question-box");
+  leftImg = loadImage("mario-tube");
 }
 
 function setup() {
   createCanvas(windowWidth, 242);
-  background(255);
+  world.gravity.y = 40;
+
+  ground = new Group();
+  ground.collider = "s";
+  ground.image = groundImg;
+  ground.tile = "=";
+  ground.w = tileSize;
+  ground.h = tileSize;
+
+  brick = new Group();
+  brick.collider = "s";
+  brick.image = brickImg;
+  brick.tile = "b";
+  brick.w = 16;
+  brick.h = 16;
+
+  questionBox = new Group();
+  questionBox.collider = "s";
+  questionBox.image = qImg;
+  questionBox.tile = "?";
+  questionBox.w = 16;
+  questionBox.h = 16;
+  
 }
 
 function draw() {
+  clear();
   background(92, 148, 252);
 }
 

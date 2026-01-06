@@ -1,7 +1,7 @@
 # Major Project Proposal
 
 ## Description
-- Two levels of Mario running and jumping game.
+- One levels of Mario running and jumping game.
 
 ## Need to have list
 - Have a moving background
