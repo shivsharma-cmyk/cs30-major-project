@@ -62,7 +62,34 @@ function setup() {
   questionBox.tile = "?";
   questionBox.w = 16;
   questionBox.h = 16;
+
+  pipeLeft = new Group();
+  pipeLeft.collider = "s";
+  pipeLeft.image = leftImg;
+  pipeLeft.tile = "L";
+  pipeLeft.w = 16;
+  pipeLeft.h = 16;
+
+  pipeRight = new Group();
+  pipeRight.collider = "s";
+  pipeRight.image = leftImg;
+  pipeRight.tile = "R";
+  pipeRight.w = 16;
+  pipeRight.h = 16;
   
+  pipeTL = new Group();
+  pipeTL.collider = "s";
+  pipeTL.image = lefImg;
+  pipeTL.tile = "l";
+  pipeTL.w = 16;
+  pipeTL.h = 16;
+
+  pipeTR = new Group();
+  pipeTR.collider = "s";
+  pipeTR.image = leftImg;
+  pipeTR.tile = "r";
+  pipeTR.w = 16;
+  pipeTR.h = 16;
 }
 
 function draw() {
