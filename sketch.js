@@ -30,12 +30,12 @@ let jump;
 
 // puting the image in
 function preload() {
-  marioImg = loadImage("mario.png");
-  marioJumpImg = loadImage("mario-jumping.png");
-  brickImg = loadImage("mario-block.png");
-  groundImg = loadImage("mario-ground-block");
-  qImg = loadImage("mario-question-box");
-  leftImg = loadImage("mario-tube");
+  marioImg = loadImage(".mario.png");
+  marioJumpImg = loadImage(".mario-jumping.png");
+  brickImg = loadImage(".mario-block.png");
+  groundImg = loadImage(".mario-ground-block");
+  qImg = loadImage(".mario-question-box");
+  leftImg = loadImage(".mario-tube");
 }
 
 function setup() {
@@ -53,43 +53,43 @@ function setup() {
   brick.collider = "s";
   brick.image = brickImg;
   brick.tile = "b";
-  brick.w = 16;
-  brick.h = 16;
+  brick.w = tileSize;
+  brick.h = tileSize;
 
   questionBox = new Group();
   questionBox.collider = "s";
   questionBox.image = qImg;
   questionBox.tile = "?";
-  questionBox.w = 16;
-  questionBox.h = 16;
+  questionBox.w = tileSize;
+  questionBox.h = tileSize;
 
   pipeLeft = new Group();
   pipeLeft.collider = "s";
   pipeLeft.image = leftImg;
   pipeLeft.tile = "L";
-  pipeLeft.w = 16;
-  pipeLeft.h = 16;
+  pipeLeft.w = tileSize;
+  pipeLeft.h = tileSize;
 
   pipeRight = new Group();
   pipeRight.collider = "s";
   pipeRight.image = leftImg;
   pipeRight.tile = "R";
-  pipeRight.w = 16;
-  pipeRight.h = 16;
+  pipeRight.w = tileSize;
+  pipeRight.h = tileSize;
   
   pipeTL = new Group();
   pipeTL.collider = "s";
   pipeTL.image = lefImg;
   pipeTL.tile = "l";
-  pipeTL.w = 16;
-  pipeTL.h = 16;
+  pipeTL.w = tileSize;
+  pipeTL.h = tileSize;
 
   pipeTR = new Group();
   pipeTR.collider = "s";
   pipeTR.image = leftImg;
   pipeTR.tile = "r";
-  pipeTR.w = 16;
-  pipeTR.h = 16;
+  pipeTR.w = tileSize;
+  pipeTR.h = tileSize;
 }
 
 function draw() {
