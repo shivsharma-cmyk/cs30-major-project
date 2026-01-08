@@ -53,43 +53,54 @@ function setup() {
   brick.collider = "s";
   brick.image = brickImg;
   brick.tile = "b";
-  brick.w = tileSize;
-  brick.h = tileSize;
+  brick.w = 16;
+  brick.h = 16;
 
   questionBox = new Group();
   questionBox.collider = "s";
   questionBox.image = qImg;
   questionBox.tile = "?";
-  questionBox.w = tileSize;
-  questionBox.h = tileSize;
+  questionBox.w = 16;
+  questionBox.h = 16;
 
   pipeLeft = new Group();
   pipeLeft.collider = "s";
   pipeLeft.image = leftImg;
   pipeLeft.tile = "L";
-  pipeLeft.w = tileSize;
-  pipeLeft.h = tileSize;
+  pipeLeft.w = 16;
+  pipeLeft.h = 16;
 
   pipeRight = new Group();
   pipeRight.collider = "s";
   pipeRight.image = leftImg;
   pipeRight.tile = "R";
-  pipeRight.w = tileSize;
-  pipeRight.h = tileSize;
+  pipeRight.w = 16;
+  pipeRight.h = 16;
   
   pipeTL = new Group();
   pipeTL.collider = "s";
   pipeTL.image = lefImg;
   pipeTL.tile = "l";
-  pipeTL.w = tileSize;
-  pipeTL.h = tileSize;
+  pipeTL.w = 16;
+  pipeTL.h = 16;
 
   pipeTR = new Group();
   pipeTR.collider = "s";
   pipeTR.image = leftImg;
   pipeTR.tile = "r";
-  pipeTR.w = tileSize;
-  pipeTR.h = tileSize;
+  pipeTR.w = 16;
+  pipeTR.h = 16;
+
+  new Tiles(
+    [
+      ".....",
+      "?????",
+      "bbbbb",
+      "====="],
+      0,
+      16,
+      tileSize,
+      tileSize - 1);
 }
 
 function draw() {
@@ -119,4 +130,3 @@ function keyPressed() {
     movePlayer();
   }
 }
-
