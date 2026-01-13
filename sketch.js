@@ -144,19 +144,24 @@ function setup() {
     tileSize,
     tileSize - 1
   );
+
+  for(g of goomba) {
+    g.vel.x = -1;
+  }
 }
 
 function draw() {
   clear();
   background(92, 148, 252);
-  if (kb.pressing("d")) {
-    camera.x += 1;
-  }
-  else if (kb.pressing("a")) {
-    camera.x -= 1;
-  }
   moveMario();
-  moveGoomba();
+  moveEnemies();
+
+  if(mario.x < 750) {
+    camera.x = 750;
+  }
+  else{
+    camera.x = mario.x;
+  }
 }
 
 function moveMario() {
@@ -182,7 +187,19 @@ function moveMario() {
   }
 }
 
-function moveGoomba() {
+function moveEnemies() {
+  for(g of goomba) {
+    g.vel.x = floor(g.facing);
+    if(g.colliding(pipeLeft) > 2) {
+      g.facing *=-1;
+    }
+    if(g.colliding(goomba) > 1) {
+      g.facing *=-1;
+    }
+    if(g.colliding(pipeRight) > 2) {
+      g.facing *=-1;
+    }
+  }
 
 }
 
