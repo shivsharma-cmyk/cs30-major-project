@@ -27,17 +27,16 @@ let goomba;
 
 // puting the image in
 function preload() {
-  marioImg = loadImage('mario.png');
-  marioJumpImg = loadImage('mario-jumping.png');
-  brickImg = loadImage('mario-block.png');
-  groundImg = loadImage('mario-ground-block.png');
-  qImg = loadImage('mario-question-box.png');
-  leftImg = loadImage('mario-left.png');
-  rightImg = loadImage('mario-right.png');
-  topLeftImg = loadImage('mario-top-left.png');
-  topRightImg = loadImage('mario-top-right.png');
-  stoneImg = loadImage('mario-stone-block.png');
-  goombaImg = loadImage('mario-goomba.png');
+  marioImg = loadImage('images/mario.png');
+  brickImg = loadImage('images/mario-block.png');
+  groundImg = loadImage('images/mario-ground-block.png');
+  qImg = loadImage('images/mario-question-box.png');
+  leftImg = loadImage('images/mario-left.png');
+  rightImg = loadImage('images/mario-right.png');
+  topLeftImg = loadImage('images/mario-top-left.png');
+  topRightImg = loadImage('images/mario-top-right.png');
+  stoneImg = loadImage('images/mario-stone-block.png');
+  goombaImg = loadImage('images/mario-goomba.png');
 }
 
 function setup() {
@@ -156,8 +155,8 @@ function draw() {
   moveMario();
   moveEnemies();
 
-  if(mario.x < 750) {
-    camera.x = 750;
+  if(mario.x < 900) {
+    camera.x = 900;
   }
   else{
     camera.x = mario.x;
@@ -200,6 +199,5 @@ function moveEnemies() {
       g.facing *=-1;
     }
   }
-
 }
 
