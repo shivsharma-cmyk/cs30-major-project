@@ -5,6 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+// all the varibles used
 let map;
 let ground;
 let brick;
@@ -25,7 +26,7 @@ let stoneImg;
 let mario;
 let goomba;
 
-// puting the image in
+// all images loaded from the images folder
 function preload() {
   marioImg = loadImage('images/mario.png');
   brickImg = loadImage('images/mario-block.png');
@@ -120,6 +121,7 @@ function setup() {
 
   mario.scale = 0.6;
 
+  // the map of the level using the tiles amde from each image
   new Tiles(
     [
       '...................................................................................................................................................................................................................',
@@ -149,20 +151,16 @@ function setup() {
   }
 }
 
+// recalling all the functions 
 function draw() {
   clear();
   background(92, 148, 252);
   moveMario();
   moveEnemies();
-
-  if(mario.x < 900) {
-    camera.x = 900;
-  }
-  else{
-    camera.x = mario.x;
-  }
+  moveCamera();
 }
 
+// mario movent throught keys
 function moveMario() {
   if(kb.pressing('d')) {
     mario.vel.x = 2.5;
@@ -186,18 +184,32 @@ function moveMario() {
   }
 }
 
+// goomba movement
 function moveEnemies() {
   for(g of goomba) {
     g.vel.x = floor(g.facing);
     if(g.colliding(pipeLeft) > 2) {
       g.facing *=-1;
     }
+    
     if(g.colliding(goomba) > 1) {
       g.facing *=-1;
     }
+    
     if(g.colliding(pipeRight) > 2) {
       g.facing *=-1;
     }
+  }
+}
+
+// the camera follows mario as he runs back and forth
+function moveCamera() {
+  if(mario.x < 900) {
+    camera.x = 900;
+  }
+  
+  else{
+    camera.x = mario.x;
   }
 }
 
