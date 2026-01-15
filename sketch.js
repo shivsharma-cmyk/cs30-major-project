@@ -50,7 +50,7 @@ function setup() {
   world.gravity.y = 40;
 
   // Create a parent group for all walkable surfaces
-  walkable = new Group()
+  walkable = new Group();
 
   // GROUND BLOCKS
   ground = new walkable.Group();  // ground is walkable
@@ -166,12 +166,12 @@ function setup() {
 
   // If Mario stomps a Goomba from above → remove Goomba
   bottomSensor.overlaps(goomba,(s,g)=> {
-    g.remove()
+    g.remove();
   });
 
   // If Mario hits a question box from below → turn it into a brick
   topSensor.overlaps(questionBox,(s,q)=> {
-    q.image = brickImg
+    q.image = brickImg;
   });
 
   // TILE MAP (LEVEL DESIGN)
@@ -219,6 +219,7 @@ function draw() {
   moveEnemies();
   moveCamera();
   OOB(); // out-of-bounds check
+  deathCount();
 }
 
 // MARIO MOVEMENT LOGIC
@@ -313,4 +314,8 @@ function OOB() {
   if(mario.y < 10 || mario.y > 700) {
     reset();
   }
+}
+
+function deathCount() {
+  text(reset + 1);
 }
