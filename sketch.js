@@ -5,7 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-// all the varibles used
+// Global Variables
 let map;
 let ground;
 let brick;
@@ -25,8 +25,10 @@ let goombaImg;
 let stoneImg;
 let mario;
 let goomba;
+let topSensor;
+let bottomSensor;
 
-// all images loaded from the images folder
+// It ensures images are fully loaded before the game starts
 function preload() {
   marioImg = loadImage('images/mario.png');
   brickImg = loadImage('images/mario-block.png');
@@ -40,31 +42,41 @@ function preload() {
   goombaImg = loadImage('images/mario-goomba.png');
 }
 
+//setup() runs ONCE when the program starts
 function setup() {
   createCanvas(windowWidth, 242);
+  
+  // Apply gravity to ALL dynamic objects
   world.gravity.y = 40;
 
-  ground = new Group();
-  ground.collider = 's';
-  ground.image = groundImg;
-  ground.tile = '=';
-  ground.w = tileSize;
-  ground.h = tileSize;
+  // Create a parent group for all walkable surfaces
+  walkable = new Group()
 
-  brick = new Group();
+  // GROUND BLOCKS
+  ground = new walkable.Group();  // ground is walkable
+  ground.collider = 's';          // 's' = static (does not move)
+  ground.image = groundImg;       // assign image
+  ground.tile = '=';              // symbol used in tile map
+  ground.w = tileSize;            // width
+  ground.h = tileSize;            // height
+
+  // BRICK BLOCKS
+  brick = new walkable.Group();
   brick.collider = 's';
   brick.image = brickImg;
   brick.tile = 'b';
   brick.w = tileSize;
   brick.h = tileSize;
 
-  questionBox = new Group();
+  // QUESTION BOXES
+  questionBox = new walkable.Group();
   questionBox.collider = 's';
   questionBox.image = qImg;
   questionBox.tile = '?';
   questionBox.w = tileSize;
   questionBox.h = tileSize;
 
+  // PIPE BODY (LEFT & RIGHT)
   pipeLeft = new Group();
   pipeLeft.collider = 's';
   pipeLeft.image = leftImg;
@@ -78,50 +90,91 @@ function setup() {
   pipeRight.tile = 'R';
   pipeRight.w = tileSize;
   pipeRight.h = tileSize;
-      
-  pipeTL = new Group();
+   
+  // PIPE TOPS
+  pipeTL = new walkable.Group();
   pipeTL.collider = 's';
   pipeTL.image = topLeftImg;
   pipeTL.tile = 'l';
   pipeTL.w = tileSize;
   pipeTL.h = tileSize;
 
-  pipeTR = new Group();
+  pipeTR = new walkable.Group();
   pipeTR.collider = 's';
   pipeTR.image = topRightImg;
   pipeTR.tile = 'r';
   pipeTR.w = tileSize;
   pipeTR.h = tileSize;
 
-  stone = new Group();
+  // STONE BLOCKS
+  stone = new walkable.Group();
   stone.collider = 's';
   stone.image = stoneImg;
   stone.tile = 'd';
   stone.w = tileSize;
   stone.h = tileSize;
 
+  // GOOMBA ENEMIES
   goomba = new Group();
-  goomba.collider = 'd';
-  goomba.rotationLock = true;
+  goomba.collider = 'd'; // 'd' = dynamic (affected by gravity)
+  goomba.rotationLock = true; // prevents spinning when colliding
   goomba.image = goombaImg;
   goomba.tile = 'g';
   goomba.w = tileSize;
   goomba.h = tileSize;
-  goomba.facing = -1;
+  // Direction the Goomba is moving
+  goomba.facing = -1; // -1 = left, 1 = right
 
+  // MARIO PLAYER
   mario = new Sprite( 16, 160, 25, 25);
   mario.rotationLock = true;
   mario.spriteSheet = marioImg;
   mario.addAnis(
     {
-      run: { row:0, frames:2},
-      stand: { row:0, frames:1},
+      run: { row:0, frames:2},  // running animation
+      stand: { row:0, frames:1}, // idle frame
     }
   );
 
-  mario.scale = 0.6;
+  mario.scale = 0.6; // scale Mario down to fit tiles
 
-  // the map of the level using the tiles amde from each image
+  // COLLISION SENSORS
+
+  // Sensor above Mario’s head
+  topSensor = new Sprite(mario.x, mario.y - mario.h/2);
+
+  // Sensor below Mario’s feet
+  bottomSensor = new Sprite(mario.x, mario.y + mario.h/2);
+
+  // Sensors are very thin
+  topSensor.w = mario.w/2;
+  topSensor.h = 2;
+  bottomSensor.w = mario.w/2;
+  bottomSensor.h = 2;
+
+  // Sensors should not be visible
+  bottomSensor.visible = false;
+  topSensor.visible = false;
+
+  // Glue sensors to Mario so they move together
+  let bottomJoint = new GlueJoint(mario, bottomSensor);
+  let topJoint = new GlueJoint(mario, topSensor);
+  topJoint.visible = false;
+  bottomJoint.visible = false;
+
+  //collisions
+
+  // If Mario stomps a Goomba from above → remove Goomba
+  bottomSensor.overlaps(goomba,(s,g)=> {
+    g.remove()
+  });
+
+  // If Mario hits a question box from below → turn it into a brick
+  topSensor.overlaps(questionBox,(s,q)=> {
+    q.image = brickImg
+  });
+
+  // TILE MAP (LEVEL DESIGN)
   new Tiles(
     [
       '...................................................................................................................................................................................................................',
@@ -129,23 +182,24 @@ function setup() {
       '...................................................................................................................................................................................................................',
       '...................................................................................................................................................................................................................',
       '...................................................................................................................................................................................................................',
-      '..................................................................................g.g..............................................................................................................................',
+      '...................................................................................................................................................................................................................',
       '......................?..........................................................bbbbbbbb...bbb?..............?...........bbb....b??b........................................................dd....................',
       '............................................................................................................................................................................................ddd....................',
       '...........................................................................................................................................................................................dddd....................',
       '..........................................................................................................................................................................................ddddd....................',
-      '................?...b?b?b.....................lr.........lr...................b?b..............b.....bb....?..?..?.....b..........bb......d..d..........dd..d............bb?b............dddddd....................',
+      '................?...b?b?b.....................lr.........lr...................b?b....................bb....?..?..?.....b..........bb......d..d..........dd..d............bb?b............dddddd....................',
       '......................................lr......LR.........LR..............................................................................dd..dd........ddd..dd..........................ddddddd....................',
-      '............................lr........LR......LR.........LR.............................................................................ddd..ddd......dddd..ddd.....lr..............lr.dddddddd....................',
-      '......................g.....LR........LR.g....LR..g.g....LR.....................................g.g.............g.g.......g..g.........dddd..dddd....ddddd..dddd....LR....g...g.....LRddddddddd....................',
+      '............................lr........LR......LR.........LR.................................lr..........................................ddd..ddd......dddd..ddd.....lr..............lr.dddddddd....................',
+      '......................g.....LR........LR.g....LR..g.g....LR.................................LR..g.g.............g.g.......g..g.........dddd..dddd....ddddd..dddd....LR....g...g.....LRddddddddd....................',
       '======================================================================..===============...================================================================..=======================================================',
       '======================================================================..===============...================================================================..======================================================='],
-    0,
-    16,
-    tileSize,
-    tileSize - 1
+    0,            // x offset
+    16,           // y offset
+    tileSize,     // tile width
+    tileSize - 1  // tile height
   );
 
+  // Start every Goomba moving left
   for(g of goomba) {
     g.vel.x = -1;
   }
@@ -153,40 +207,60 @@ function setup() {
 
 // recalling all the functions 
 function draw() {
+  
+  // Clear previous frame
   clear();
+  
+  //sky
   background(92, 148, 252);
+
+  // Call game logic functions
   moveMario();
   moveEnemies();
   moveCamera();
+  OOB(); // out-of-bounds check
 }
 
-// mario movent throught keys
+// MARIO MOVEMENT LOGIC
 function moveMario() {
+
+  // Move right
   if(kb.pressing('d')) {
-    mario.vel.x = 2.5;
-    mario.ani = 'run';
-    mario.mirror.x = false;
+    mario.vel.x = 2.5;     // mario x speed
+    mario.ani = 'run';     // run animation
+    mario.mirror.x = false;  
   }
   
+  // Move left
   else if(kb.pressing('a')) {
     mario.vel.x = -2.5;
     mario.ani = 'run';
     mario.mirror.x = true;
   }
 
+  // Not moving
   else {
     mario.ani = 'stand';
   }
 
-  if(kb.presses("w") && (mario.colliding(ground) || mario.colliding(brick) || mario.colliding(stone) || 
-  mario.colliding(questionBox) || mario.colliding(pipeTL) || mario.colliding(pipeTR))) {
+  // Jumping
+  if(kb.presses("w") && bottomSensor.colliding(walkable)) {
     mario.vel.y = -11;
+  }
+
+  // If Mario touches a Goomba → reset level
+  if (mario.overlapping(goomba) > 1) {
+    reset();
   }
 }
 
 // goomba movement
 function moveEnemies() {
+
+  // Move in the direction Goomba is facing
   for(g of goomba) {
+
+    // Turn around when hitting obstacles
     g.vel.x = floor(g.facing);
     if(g.colliding(pipeLeft) > 2) {
       g.facing *=-1;
@@ -199,13 +273,18 @@ function moveEnemies() {
     if(g.colliding(pipeRight) > 2) {
       g.facing *=-1;
     }
+    if(g.colliding(stone) > 2) {
+      g.facing *=-1;
+    }
   }
 }
 
-// the camera follows mario as he runs back and forth
+// CAMERA FOLLOW
 function moveCamera() {
-  if(mario.x < 900) {
-    camera.x = 900;
+
+  // Lock camera until Mario reaches a certain point
+  if(mario.x < 750) {
+    camera.x = 750;
   }
   
   else{
@@ -213,3 +292,25 @@ function moveCamera() {
   }
 }
 
+// RESET MARIO POSITION
+function reset() {
+
+  // Reset Mario position
+  mario.x = 16;
+  mario.y = 160;
+
+  // Re-align sensors
+  topSensor.x = mario.x;
+  topSensor.y = mario.y - mario.h/2;
+  bottomSensor.x = mario.x;
+  bottomSensor.y = mario.y + mario.h/2;
+}
+
+// OUT-OF-BOUNDS CHECK
+function OOB() {
+
+  // If Mario falls off the map or goes too high
+  if(mario.y < 10 || mario.y > 700) {
+    reset();
+  }
+}
