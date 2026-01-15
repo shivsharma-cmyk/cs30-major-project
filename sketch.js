@@ -317,5 +317,13 @@ function OOB() {
 }
 
 function deathCount() {
-  text(reset + 1);
+  
+}
+
+function time() {
+
+}
+
+function finish() {
+  
 }
