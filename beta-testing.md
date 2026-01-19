@@ -8,10 +8,11 @@
 - It was nice to know score.
 
 ## Programmer's advice:
-- Guessed the control's because of experience but still said to add in discreption.
+- Guessed the control's because of experience but still said to add it in discreption.
 - Control's were well.
 - Mario was always in the center.
 - Score was great to know to see their performance.
 - Map looked like the original.
 - Goombas killed looked so similar.
 - Question box worked just like in the original game.
+- Sometimes the Goombas get stuck to each other or the pipe.
