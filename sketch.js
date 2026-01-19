@@ -62,10 +62,10 @@ function setup() {
   // GROUND BLOCKS
   ground = new walkable.Group();  // ground is walkable
   ground.collider = 's';          // 's' = static (does not move)
-  ground.image = groundImg;       // assign image
+  ground.image = groundImg;    
   ground.tile = '=';              // symbol used in tile map
-  ground.w = tileSize;            // width
-  ground.h = tileSize;            // height
+  ground.w = tileSize;           
+  ground.h = tileSize;           
 
   // BRICK BLOCKS
   brick = new walkable.Group();
@@ -129,7 +129,6 @@ function setup() {
   goomba.tile = 'g';
   goomba.w = tileSize;
   goomba.h = tileSize;
-  // Direction the Goomba is moving
   goomba.facing = -1; // -1 = left, 1 = right
 
   // MARIO PLAYER
@@ -143,7 +142,7 @@ function setup() {
     }
   );
 
-  mario.scale = 0.6; // scale Mario down to fit tiles
+  mario.scale = 0.6;
 
   // COLLISION SENSORS
 
@@ -181,10 +180,9 @@ function setup() {
   topSensor.overlaps(questionBox,(s,q)=> {
     // If this question box was NOT used yet
   if (!q.used) {
-
-    q.used = true;        // mark box as used
-    q.image = brickImg;  // change to brick
-    addCoin();           // add ONE coin
+    q.used = true;       
+    q.image = brickImg;  
+    addCoin();          
   }
   });
 
@@ -232,14 +230,12 @@ function draw() {
 
   // Clear previous frame
   clear();
-  
-  //sky
-  background(92, 148, 252);
 
+  background(92, 148, 252);
   moveMario();
   moveEnemies();
   moveCamera();
-  OOB(); // out-of-bounds check
+  OOB();
   updateTimer();
   checkLevelEnd();
   drawHUD();
