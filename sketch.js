@@ -27,6 +27,13 @@ let mario;
 let goomba;
 let topSensor;
 let bottomSensor;
+let deathCount = 0;
+let goombaKills = 0;
+let startTime;
+let elapsedTime = 0;
+let coinCount = 0;
+let gameOver = false;
+let levelEndX = 3100;
 
 // It ensures images are fully loaded before the game starts
 function preload() {
@@ -167,11 +174,18 @@ function setup() {
   // If Mario stomps a Goomba from above → remove Goomba
   bottomSensor.overlaps(goomba,(s,g)=> {
     g.remove();
+    addGoombaKill();
   });
 
   // If Mario hits a question box from below → turn it into a brick
   topSensor.overlaps(questionBox,(s,q)=> {
-    q.image = brickImg;
+    // If this question box was NOT used yet
+  if (!q.used) {
+
+    q.used = true;        // mark box as used
+    q.image = brickImg;  // change to brick
+    addCoin();           // add ONE coin
+  }
   });
 
   // TILE MAP (LEVEL DESIGN)
@@ -203,23 +217,32 @@ function setup() {
   for(g of goomba) {
     g.vel.x = -1;
   }
+
+  startTimer();
 }
 
 // recalling all the functions 
 function draw() {
-  
+  if (gameOver) {
+    clear();
+    background(0); 
+    drawEndScreen();
+    return;
+  }
+
   // Clear previous frame
   clear();
   
   //sky
   background(92, 148, 252);
 
-  // Call game logic functions
   moveMario();
   moveEnemies();
   moveCamera();
   OOB(); // out-of-bounds check
-  deathCount();
+  updateTimer();
+  checkLevelEnd();
+  drawHUD();
 }
 
 // MARIO MOVEMENT LOGIC
@@ -251,6 +274,7 @@ function moveMario() {
 
   // If Mario touches a Goomba → reset level
   if (mario.overlapping(goomba) > 1) {
+    countDeath();
     reset();
   }
 }
@@ -309,21 +333,81 @@ function reset() {
 
 // OUT-OF-BOUNDS CHECK
 function OOB() {
-
   // If Mario falls off the map or goes too high
   if(mario.y < 10 || mario.y > 700) {
+    countDeath();
     reset();
   }
 }
 
-function deathCount() {
-  
+// This function increases the death counter by 1
+function countDeath() {
+  deathCount++;
 }
 
-function time() {
-
+// This function starts the timer by saving the current time
+function startTimer() {
+  startTime = millis();
 }
 
-function finish() {
-  
+// This function updates the timer every frame
+function updateTimer() {
+  elapsedTime = floor((millis() - startTime) / 1000);
+}
+
+// This function increases the goomba kill counter by 1
+function addGoombaKill() {
+  goombaKills++;   
+}
+
+// This function increases the coin counter by 1
+function addCoin() {
+  coinCount++; 
+}
+
+// This function draws the HUD (Heads-Up Display) on the screen
+function drawHUD() {
+  push(); // Saves the current drawing settings
+  fill(255);
+  textSize(20);
+  textAlign(LEFT, TOP);
+
+  let x = 20;
+  let y = 20;
+  let spacing = 20;
+
+  text("Time: " + elapsedTime + "s", x, y);
+  text("Deaths: " + deathCount, x, y + spacing);
+  text("Kills: " + goombaKills, x, y + spacing * 2);
+  text("Coins: " + coinCount, x, y + spacing * 3);
+
+  pop(); // Restores the previous drawing settings
+}
+
+// This function checks if Mario has reached the end of the level
+function checkLevelEnd() {
+  if (mario.x >= levelEndX && !gameOver) {
+    gameOver = true; 
+  }
+}
+
+// This function draws the end screen when the level is complete
+function drawEndScreen() {
+  push();
+
+  background(0, 0, 0);
+  fill(255);
+  textAlign(CENTER, CENTER);
+
+  textSize(28);
+  text("LEVEL COMPLETE!", width / 2, height / 2 - 80);
+
+  textSize(18);
+  text("Time: " + elapsedTime + "s", width / 1.5, height / 2 - 20);
+  text("Deaths: " + deathCount, width / 1.5, height / 2 + 10);
+  text("Goombas Killed: " + goombaKills, width / 1.5, height / 2 + 40);
+  text("Coins: " + coinCount, width / 1.5, height / 2 + 70);
+  text("Refresh the page to play again", width / 1.5, height / 2 + 90);
+
+  pop();
 }
